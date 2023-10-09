@@ -11,38 +11,48 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/slilp/go-auth/adapter/postgres"
+	handler "github.com/slilp/go-auth/handler/account"
 )
-
-var server *http.Server
-var router *gin.Engine
 
 func main() {
 	router := initGin()
 	initApplication(router)
-	runServer()
-	shutdownServer()
+	server := runServer(router)
+	shutdownServer(server)
 }
 
 func initApplication(router *gin.Engine) {
 	// logger := monitoring.Logger()
 
 	// healthPath := fmt.Sprintf("%s/health", config.HTTP.Prefix)
-	router.GET("health", func(ctx *gin.Context) {
-		ctx.AbortWithStatusJSON(200, gin.H{
-			"statusCode": 200, "message": "OK",
+	router.GET("/health", func(ctx *gin.Context) {
+		// ctx.AbortWithStatusJSON(200, gin.H{
+		// 	"statusCode": 200, "message": "OK",
+		// })
+		ctx.JSON(200, gin.H{
+			"message": "pong",
 		})
 	})
+
+	db, err := postgres.Initialize()
+	if err != nil {
+		panic(fmt.Errorf("failed to create database connection: %w", err))
+	}
+
+	handler.AccountInitialize(db, &router.RouterGroup)
+
 }
 
 func initGin() *gin.Engine {
 
-	if "production" == "production" {
+	if "production" != "production" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	router = gin.New()
+	router := gin.New()
 	router.Use(
 		gin.Recovery(),
 	)
@@ -50,9 +60,9 @@ func initGin() *gin.Engine {
 	return router
 }
 
-func runServer() *http.Server {
+func runServer(router *gin.Engine) *http.Server {
 
-	server = &http.Server{
+	server := &http.Server{
 		Addr:    fmt.Sprintf(":%d", 3000),
 		Handler: router,
 	}
@@ -67,7 +77,7 @@ func runServer() *http.Server {
 	return server
 }
 
-func shutdownServer() {
+func shutdownServer(server *http.Server) {
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
