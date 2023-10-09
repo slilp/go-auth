@@ -1,0 +1,11 @@
+app:
+  port: 8000
+  mode: develop
+
+db:
+  host: "localhost"
+  port: 5432
+  username: postgres
+  password: postgres
+  database: goauth
+  mode: disable

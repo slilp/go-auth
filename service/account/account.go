@@ -15,17 +15,17 @@ type UpdateAccountDto struct {
 }
 
 type AccountInfo struct {
-	Username  int     `json:"username"`
-	FirstName string  `json:"firstName"`
-	LastName  string  `json:"lastName"`
-	Avatar    float64 `json:"avatar"`
-	Role      int     `json:"role"`
+	Username  string `json:"username"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Avatar    string `json:"avatar"`
+	Role      string `json:"role"`
 }
 
-//go:generate mockgen -destination=../../mock/mock_service/mock_account_service.go "github.com/slilp/go-auth" AccountService
+//go:generate mockgen -destination=../../mocks/mock_service/mock_account_service.go -package=mocks "github.com/slilp/go-auth/service/account" AccountService
 type AccountService interface {
-	CreateAccount(CreateAccountDto) (AccountInfo, error)
+	CreateAccount(CreateAccountDto) (*AccountInfo, error)
 	UpdateAccount(UpdateAccountDto) (AccountInfo, error)
 	DeleteAccount(username string) error
-	GetAccount(username string) (AccountInfo, error)
+	GetAccount(username string) (*AccountInfo, error)
 }

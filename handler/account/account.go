@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	service "github.com/slilp/go-auth/service/account"
+	utils "github.com/slilp/go-auth/util"
 )
 
 func accountServer(router *gin.RouterGroup, s service.AccountService) {
@@ -16,8 +17,6 @@ func accountServer(router *gin.RouterGroup, s service.AccountService) {
 
 	accountGroup := router.Group("/account")
 	accountGroup.GET("", handlerRoute.GetAccountInfo)
-	// accountGroup.PATCH("/update-info", PreSignedURLHandler(s))
-	// accountGroup.DELETE("", PreSignedURLHandler(s))
 }
 
 func accountHttpHandler(service service.AccountService) handler {
@@ -30,12 +29,18 @@ type handler struct {
 
 func (h handler) Register(ctx *gin.Context) {
 	req := service.CreateAccountDto{}
-	err := ctx.BindJSON(req)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.BadRequest(err.Error()))
 		return
 	}
-	h.service.CreateAccount(req)
+
+	accountRes, err := h.service.CreateAccount(req)
+	if err != nil {
+		utils.ReturnError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, accountRes)
 }
 
 func (h handler) RefreshToken(ctx *gin.Context) {
@@ -59,11 +64,12 @@ func (h handler) SignIn(ctx *gin.Context) {
 }
 
 func (h handler) GetAccountInfo(ctx *gin.Context) {
-	req := service.CreateAccountDto{}
-	err := ctx.BindJSON(req)
+
+	srvRes, err := h.service.GetAccount("slil.pua@gmail.com")
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+		utils.ReturnError(ctx, err)
 		return
 	}
-	h.service.CreateAccount(req)
+
+	ctx.JSON(http.StatusOK, srvRes)
 }

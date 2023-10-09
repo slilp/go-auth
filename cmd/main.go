@@ -7,15 +7,18 @@ import (
 	"log"
 	"net/http"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/slilp/go-auth/adapter/postgres"
+	"github.com/slilp/go-auth/common/postgres"
 	handler "github.com/slilp/go-auth/handler/account"
+	"github.com/spf13/viper"
 )
 
 func main() {
+	initConfig()
 	router := initGin()
 	initApplication(router)
 	server := runServer(router)
@@ -23,13 +26,8 @@ func main() {
 }
 
 func initApplication(router *gin.Engine) {
-	// logger := monitoring.Logger()
 
-	// healthPath := fmt.Sprintf("%s/health", config.HTTP.Prefix)
 	router.GET("/health", func(ctx *gin.Context) {
-		// ctx.AbortWithStatusJSON(200, gin.H{
-		// 	"statusCode": 200, "message": "OK",
-		// })
 		ctx.JSON(200, gin.H{
 			"message": "pong",
 		})
@@ -46,10 +44,11 @@ func initApplication(router *gin.Engine) {
 
 func initGin() *gin.Engine {
 
-	if "production" != "production" {
-		gin.SetMode(gin.ReleaseMode)
-	} else {
+	if viper.GetString("app.mode") == "develop" {
 		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+
 	}
 
 	router := gin.New()
@@ -63,7 +62,7 @@ func initGin() *gin.Engine {
 func runServer(router *gin.Engine) *http.Server {
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%d", 3000),
+		Addr:    fmt.Sprintf(":%d", viper.GetInt("app.port")),
 		Handler: router,
 	}
 	fmt.Printf("Server is running on port: %s\n", server.Addr)
@@ -93,4 +92,18 @@ func shutdownServer(server *http.Server) {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal("Server forced to shutdown")
 	}
+}
+
+func initConfig() {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+
 }

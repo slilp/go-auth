@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -34,7 +35,7 @@ func Initialize() (*gorm.DB, error) {
 
 func generateDSN() string {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s database=%s port=%s sslmode=%s",
-		"localhost", "postgres", "postgres", "goauth", "5432", "disable")
+		viper.GetString("db.host"), viper.GetString("db.username"), viper.GetString("db.password"), viper.GetString("db.database"), viper.GetString("db.port"), viper.GetString("db.mode"))
 
 	return dsn
 }
