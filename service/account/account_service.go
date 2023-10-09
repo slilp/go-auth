@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/jinzhu/copier"
 	repository "github.com/slilp/go-auth/repository/account"
-	utils "github.com/slilp/go-auth/util"
+	utils "github.com/slilp/go-auth/utils"
 )
 
 type accountService struct {

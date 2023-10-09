@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	service "github.com/slilp/go-auth/service/account"
-	utils "github.com/slilp/go-auth/util"
+	utils "github.com/slilp/go-auth/utils"
 )
 
 func accountServer(router *gin.RouterGroup, s service.AccountService) {

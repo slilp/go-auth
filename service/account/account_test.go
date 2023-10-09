@@ -7,7 +7,7 @@ import (
 	mocks "github.com/slilp/go-auth/mocks/mock_repository"
 	repository "github.com/slilp/go-auth/repository/account"
 	service "github.com/slilp/go-auth/service/account"
-	utils "github.com/slilp/go-auth/util"
+	utils "github.com/slilp/go-auth/utils"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -18,6 +18,7 @@ import (
 )
 
 func main() {
+	initTimeZone()
 	initConfig()
 	router := initGin()
 	initApplication(router)
@@ -106,4 +107,13 @@ func initConfig() {
 		panic(err)
 	}
 
+}
+
+func initTimeZone() {
+	ict, err := time.LoadLocation("Asia/Bangkok")
+	if err != nil {
+		panic(err)
+	}
+
+	time.Local = ict
 }
