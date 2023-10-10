@@ -24,10 +24,10 @@ func (r accountRepositoryDB) GetByUsername(username string) (*AccountEntity, err
 	return &account, tx.Error
 }
 
-func (r accountRepositoryDB) Delete(accId string) error {
-	return nil
+func (r accountRepositoryDB) Delete(accId uint) error {
+	return r.db.Delete(&AccountEntity{}, accId).Error
 }
 
-func (r accountRepositoryDB) Update(acc AccountEntity) (AccountEntity, error) {
-	return AccountEntity{}, nil
+func (r accountRepositoryDB) Update(acc AccountEntity) error {
+	return r.db.Model(&acc).Updates(acc).Error
 }

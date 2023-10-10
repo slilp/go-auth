@@ -50,7 +50,7 @@ func (mr *MockAccountServiceMockRecorder) CreateAccount(arg0 interface{}) *gomoc
 }
 
 // DeleteAccount mocks base method.
-func (m *MockAccountService) DeleteAccount(arg0 string) error {
+func (m *MockAccountService) DeleteAccount(arg0 uint) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteAccount", arg0)
 	ret0, _ := ret[0].(error)
@@ -94,16 +94,15 @@ func (mr *MockAccountServiceMockRecorder) SignIn(arg0 interface{}) *gomock.Call 
 }
 
 // UpdateAccount mocks base method.
-func (m *MockAccountService) UpdateAccount(arg0 service.UpdateAccountDto) (service.AccountInfo, error) {
+func (m *MockAccountService) UpdateAccount(arg0 uint, arg1 service.UpdateAccountDto) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateAccount", arg0)
-	ret0, _ := ret[0].(service.AccountInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "UpdateAccount", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // UpdateAccount indicates an expected call of UpdateAccount.
-func (mr *MockAccountServiceMockRecorder) UpdateAccount(arg0 interface{}) *gomock.Call {
+func (mr *MockAccountServiceMockRecorder) UpdateAccount(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAccount", reflect.TypeOf((*MockAccountService)(nil).UpdateAccount), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAccount", reflect.TypeOf((*MockAccountService)(nil).UpdateAccount), arg0, arg1)
 }

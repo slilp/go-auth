@@ -33,12 +33,16 @@ func (s accountService) CreateAccount(req CreateAccountDto) (*AccountInfo, error
 	return &srvRes, err
 }
 
-func (s accountService) UpdateAccount(UpdateAccountDto) (AccountInfo, error) {
-	return AccountInfo{}, nil
+func (s accountService) UpdateAccount(accId uint, req UpdateAccountDto) error {
+	var newModel repository.AccountEntity
+	copier.Copy(&newModel, &req)
+	newModel.ID = accId
+	return s.accountRepo.Update(newModel)
 }
 
-func (s accountService) DeleteAccount(username string) error {
-	return nil
+func (s accountService) DeleteAccount(accId uint) error {
+	err := s.accountRepo.Delete(accId)
+	return err
 }
 
 func (s accountService) GetAccount(username string) (*AccountInfo, error) {

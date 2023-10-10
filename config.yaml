@@ -13,3 +13,7 @@ db:
 redis:
   host: "localhost"
   port: 6379
+
+jwt:
+  accessToken: 3786f456-198b-4475-8563-a613ec937fdd
+  refreshToken: bdf8bcd9-6ffe-49e6-9e88-e4e2aacaa517

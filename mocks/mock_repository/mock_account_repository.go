@@ -50,7 +50,7 @@ func (mr *MockAccountRepositoryMockRecorder) Create(arg0 interface{}) *gomock.Ca
 }
 
 // Delete mocks base method.
-func (m *MockAccountRepository) Delete(arg0 string) error {
+func (m *MockAccountRepository) Delete(arg0 uint) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Delete", arg0)
 	ret0, _ := ret[0].(error)
@@ -79,12 +79,11 @@ func (mr *MockAccountRepositoryMockRecorder) GetByUsername(arg0 interface{}) *go
 }
 
 // Update mocks base method.
-func (m *MockAccountRepository) Update(arg0 repository.AccountEntity) (repository.AccountEntity, error) {
+func (m *MockAccountRepository) Update(arg0 repository.AccountEntity) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", arg0)
-	ret0, _ := ret[0].(repository.AccountEntity)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Update indicates an expected call of Update.

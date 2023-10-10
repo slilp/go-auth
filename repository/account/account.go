@@ -20,6 +20,6 @@ func (AccountEntity) TableName() string {
 type AccountRepository interface {
 	GetByUsername(username string) (*AccountEntity, error)
 	Create(AccountEntity) (AccountEntity, error)
-	Delete(id string) error
-	Update(AccountEntity) (AccountEntity, error)
+	Delete(id uint) error
+	Update(AccountEntity) error
 }

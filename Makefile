@@ -1,6 +1,8 @@
 run:
-	go run cmd/main.go
+	go run main.go
 generate: 
 	go generate	./...
 test:
 	go	test	./...	-cover
+build:
+	go	build	cmd/main.go

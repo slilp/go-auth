@@ -63,3 +63,5 @@ cert/
 /data
 
 .vscode
+
+.config.yaml
