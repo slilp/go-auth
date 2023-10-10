@@ -78,6 +78,21 @@ func (mr *MockAccountServiceMockRecorder) GetAccount(arg0 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccount", reflect.TypeOf((*MockAccountService)(nil).GetAccount), arg0)
 }
 
+// SignIn mocks base method.
+func (m *MockAccountService) SignIn(arg0 service.SignInDto) (*service.AccountInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SignIn", arg0)
+	ret0, _ := ret[0].(*service.AccountInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SignIn indicates an expected call of SignIn.
+func (mr *MockAccountServiceMockRecorder) SignIn(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SignIn", reflect.TypeOf((*MockAccountService)(nil).SignIn), arg0)
+}
+
 // UpdateAccount mocks base method.
 func (m *MockAccountService) UpdateAccount(arg0 service.UpdateAccountDto) (service.AccountInfo, error) {
 	m.ctrl.T.Helper()

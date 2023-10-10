@@ -24,7 +24,7 @@ func newFakeAccount() repository.AccountEntity {
 
 func TestGetAccount(t *testing.T) {
 
-	t.Run("Not found error", func(t *testing.T) {
+	t.Run("Not found data", func(t *testing.T) {
 
 		//Arrange
 		ctrl := gomock.NewController(t)

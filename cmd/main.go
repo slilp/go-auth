@@ -34,11 +34,10 @@ func initApplication(router *gin.Engine) {
 		})
 	})
 
-	db, err := postgres.Initialize()
+	db, err := postgres.NewPostgresDB()
 	if err != nil {
 		panic(fmt.Errorf("failed to create database connection: %w", err))
 	}
-
 	handler.AccountInitialize(db, &router.RouterGroup)
 
 }

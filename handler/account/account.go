@@ -9,7 +9,7 @@ import (
 )
 
 func accountServer(router *gin.RouterGroup, s service.AccountService) {
-	handlerRoute := accountHttpHandler(s)
+	handlerRoute := NewAccountHttpHandler(s)
 	authGroup := router.Group("/auth")
 	authGroup.POST("/register", handlerRoute.Register)
 	authGroup.POST("/sign-in", handlerRoute.SignIn)
@@ -19,7 +19,7 @@ func accountServer(router *gin.RouterGroup, s service.AccountService) {
 	accountGroup.GET("", handlerRoute.GetAccountInfo)
 }
 
-func accountHttpHandler(service service.AccountService) handler {
+func NewAccountHttpHandler(service service.AccountService) handler {
 	return handler{service: service}
 }
 
@@ -54,13 +54,19 @@ func (h handler) RefreshToken(ctx *gin.Context) {
 }
 
 func (h handler) SignIn(ctx *gin.Context) {
-	req := service.CreateAccountDto{}
-	err := ctx.BindJSON(req)
-	if err != nil {
+
+	var form service.SignInDto
+	if err := ctx.ShouldBindJSON(&form); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	h.service.CreateAccount(req)
+	accInfo, err := h.service.SignIn(form)
+	if err != nil {
+		utils.ReturnError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"account": accInfo, "accessToken": "accessToken", "refreshToken": "refreshToken"})
 }
 
 func (h handler) GetAccountInfo(ctx *gin.Context) {

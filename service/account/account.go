@@ -22,10 +22,16 @@ type AccountInfo struct {
 	Role      string `json:"role"`
 }
 
+type SignInDto struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 //go:generate mockgen -destination=../../mocks/mock_service/mock_account_service.go -package=mocks "github.com/slilp/go-auth/service/account" AccountService
 type AccountService interface {
 	CreateAccount(CreateAccountDto) (*AccountInfo, error)
 	UpdateAccount(UpdateAccountDto) (AccountInfo, error)
 	DeleteAccount(username string) error
 	GetAccount(username string) (*AccountInfo, error)
+	SignIn(SignInDto) (*AccountInfo, error)
 }

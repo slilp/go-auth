@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func Initialize() (*gorm.DB, error) {
+func NewPostgresDB() (*gorm.DB, error) {
 	dsn := generateDSN()
 
 	logger := logger.New(
